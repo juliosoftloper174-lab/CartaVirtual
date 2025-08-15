@@ -57,7 +57,7 @@ class Categoria {
 
     //Método para obtener todas las categorías en la base de datos
     public function obtenerCategorias() {
-        $consulta = "SELECT * FROM categorias";
+        $consulta = "CALL CategoriasActivas()";
         $stmt = $this->conexion->prepare($consulta);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

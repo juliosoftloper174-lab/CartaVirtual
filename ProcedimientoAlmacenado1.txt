@@ -1,0 +1,6 @@
+DELIMITER $$
+CREATE PROCEDURE CategoriasActivas()
+BEGIN
+    SELECT nombre, imagen_url FROM categoria WHERE estado = 'Si';
+END$$
+DELIMITER ;
