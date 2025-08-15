@@ -1,6 +1,16 @@
+*** FILTRAR CATEGORIAS SOLO CON NOMBRE, IMAGEN DE REFERENCIA Y CON ESTADO ACTIVO***
 DELIMITER $$
 CREATE PROCEDURE CategoriasActivas()
 BEGIN
     SELECT nombre, imagen_url FROM categoria WHERE estado = 'Si';
 END$$
+DELIMITER ;
+
+*** FILTRAR TODOS LOS PRODUCTOS SEGÚN LA CATEGORÍA Y CON ESTADO ACTIVO ***
+DELIMITER $$
+CREATE PROCEDURE ProductosPorCategoria(IN p_id_categoria INT)
+BEGIN
+    SELECT * FROM productos
+    WHERE id_categoria = p_id_categoria AND estado = 'si';
+END $$
 DELIMITER ;
