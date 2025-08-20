@@ -54,9 +54,11 @@ export default function Header({ className = '' }) {
             </span>
           </Link>
           
+          <a href="modelo/login.php"> 
           <button className="ml-4 px-4 py-2 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors">
             Iniciar sesión
           </button>
+          </a>
         </div>
       </div>
     </header>
