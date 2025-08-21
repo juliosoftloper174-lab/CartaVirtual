@@ -1,5 +1,5 @@
 <?php 
-require_once 'conexion.php';
+require_once '../config/conexion.php';
 
 // Clase para manejar categorías de productos
 class Categoria {
@@ -44,10 +44,9 @@ class Categoria {
     }
 
     // Método para guardar la categoría en la base de datos con PDO
-    public function guardarCategoria() {
-        $consulta = "INSERT INTO categorias (nombre, descripcion, imagen_url, estado) VALUES (:nombre, :descripcion, :imagen_url, :estado)";
+    public function crearCategoria() {
+        $consulta = "INSERT INTO categoria (nombre, descripcion, imagen_url, estado) VALUES (:nombre, :descripcion, :imagen_url, :estado)";
         $stmt = $this->conexion->prepare($consulta);
-
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':descripcion', $this->descripcion);
         $stmt->bindParam(':imagen_url', $this->imagen_url);
@@ -55,12 +54,41 @@ class Categoria {
         return $stmt->execute();
     }
 
-    //Método para obtener todas las categorías en la base de datos
+    // Método para obtener todas las categorías en la base de datos
     public function obtenerCategorias() {
-        $consulta = "CALL CategoriasActivas()";
+        $consulta = "SELECT * FROM categoria";
         $stmt = $this->conexion->prepare($consulta);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Método para obtener una categoría por su ID
+    public function obtenerCategoriaPorId($id_categoria) {
+        $consulta = "SELECT * FROM categoria WHERE id_categoria = :id_categoria";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Método para actualizar una categoría
+    public function actualizarCategoria() {
+        $consulta = "UPDATE categoria SET nombre = :nombre, descripcion = :descripcion, imagen_url = :imagen_url, estado = :estado WHERE id_categoria = :id_categoria";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":descripcion", $this->descripcion);
+        $stmt->bindParam(":imagen_url", $this->imagen_url);
+        $stmt->bindParam(":estado", $this->estado);
+        $stmt->bindParam(":id_categoria", $this->id_categoria, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
+    // Método para eliminar una categoría
+    public function eliminarCategoria() {
+        $consulta = "DELETE FROM categoria WHERE id_categoria = :id_categoria";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(':id_categoria', $this->id_categoria, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
 ?>

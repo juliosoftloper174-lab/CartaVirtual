@@ -1,5 +1,5 @@
 <?php 
-require_once 'conexion.php';
+require_once '../config/conexion.php';
 require_once 'categoria_class.php';
 
 // Clase para manejar productos
@@ -43,7 +43,7 @@ class Producto {
     public function setPrecio($precio) {
         $this->precio = $precio;
     }
-    public function getimagen_url() {
+    public function getImagen_url() {
         return $this->imagen_url;
     }
     public function setImagenUrl($imagen_url) {
@@ -63,11 +63,10 @@ class Producto {
     }
 
     // Método para guardar el producto en la base de datos con PDO
-    public function guardarProducto() {
-        $consulta = "INSERT INTO productos (id_categoria, nombre, precio, imagen_url, descripcion, estado) VALUES (:id_categoria, :nombre, :precio, :imagen_url, :descripcion, :estado)";
+    public function crearProducto() {
+        $consulta = "INSERT INTO producto (id_categoria, nombre, precio, imagen_url, descripcion, estado) VALUES (:id_categoria, :nombre, :precio, :imagen_url, :descripcion, :estado)";
         $stmt = $this->conexion->prepare($consulta);
-
-        $stmt->bindParam(':id_categoria', $this->id_categoria);
+        $stmt->bindParam(':id_categoria', $this->id_categoria, PDO::PARAM_INT);
         $stmt->bindParam(':nombre', $this->nombre);
         $stmt->bindParam(':precio', $this->precio);
         $stmt->bindParam(':imagen_url', $this->imagen_url);
@@ -78,19 +77,49 @@ class Producto {
 
     // Método para obtener todos los productos en la base de datos
     public function obtenerProductos() {
-        $consulta = "CALL ProductosActivos()";
+        $consulta = "SELECT * FROM producto";
         $stmt = $this->conexion->prepare($consulta);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Método para obtener un producto por su ID
+    public function obtenerProductoPorId($id_producto) {
+        $consulta = "SELECT * FROM producto WHERE id_producto = :id_producto";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(":id_producto", $id_producto, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     // Método para obtener productos por categoría
     public function obtenerProductosPorCategoria($id_categoria) {
-        $consulta = "CALL ProductosPorCategoria(:id_categoria)";
+        $consulta = "SELECT * FROM producto WHERE id_categoria = :id_categoria";
         $stmt = $this->conexion->prepare($consulta);
         $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Método para actualizar un producto en la base de datos
+    public function actualizarProducto() {
+        $consulta = "UPDATE producto SET id_categoria = :id_categoria, nombre = :nombre, precio = :precio, imagen_url = :imagen_url, descripcion = :descripcion, estado = :estado WHERE id_producto = :id_producto";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(":id_categoria", $this->id_categoria, PDO::PARAM_INT);
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":precio", $this->precio);
+        $stmt->bindParam(":imagen_url", $this->imagen_url);
+        $stmt->bindParam(":descripcion", $this->descripcion);
+        $stmt->bindParam(":estado", $this->estado);
+        return $stmt->execute();
+    }
+
+    // Método para eliminar un producto por su ID
+    public function eliminarProducto() {
+        $consulta = "DELETE FROM producto WHERE id_producto = :id_producto";
+        $stmt = $this->conexion->prepare($consulta);
+        $stmt->bindParam(':id_producto', $this->id_producto, PDO::PARAM_INT);
+        return $stmt->execute();
     }
 }
 ?>
