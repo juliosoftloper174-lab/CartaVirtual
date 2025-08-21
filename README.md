@@ -1,6 +1,143 @@
 # 🍔 Burguer Peru - Aplicación de Restaurante
 
-¡Hola! 👋 Esta es una aplicación web moderna para un restaurante de hamburguesas peruanas. Es como un menú digital donde los clientes pueden ver las hamburguesas, agregarlas a un carrito de compras y hacer pedidos.
+¡Hola! 👋 Esta es una aplicación web moderna para un restaurante de hamburguesas peruanas. Incluye un menú digital interactivo, carrito de compras y un panel de administración para gestionar el menú.
+
+## 🚀 Características Principales
+
+### 1. 👨‍💻 Panel de Administración
+- Autenticación de usuarios
+- CRUD completo para los ítems del menú
+- Interfaz intuitiva para gestión de productos
+
+### 2. 🏠 Página de Inicio
+- Muestra un gran banner con una imagen atractiva de hamburguesas
+- Barra de navegación con acceso al menú y carrito
+- Categorías de comidas disponibles
+
+### 3. 🍽️ Menú de Comida
+- Muestra todas las hamburguesas y combos disponibles
+- Cada ítem tiene foto, nombre, descripción y precio
+- Filtrado por categorías
+
+### 4. 🛒 Carrito de Compras
+- Gestión de ítems seleccionados
+- Modificación de cantidades
+- Cálculo automático del total
+- Vaciar carrito
+
+---
+
+## 🏗️ Estructura del Frontend
+
+### 📁 Directorios Principales
+- `/src/components` - Componentes reutilizables (Header, Footer, etc.)
+- `/src/pages` - Vistas principales de la aplicación
+  - `/admin` - Panel de administración
+  - `LoginPage.jsx` - Autenticación de usuarios
+  - `RegisterPage.jsx` - Registro de nuevos usuarios
+- `/src/contexts` - Manejo de estado global (carrito, autenticación)
+- `/public/images` - Recursos multimedia
+
+### 🛠️ Tecnologías Clave
+- ⚛️ React 18 - Biblioteca principal
+- 🎨 Tailwind CSS - Estilización
+- 🔄 React Router 6 - Navegación
+- 🛒 Context API - Gestión de estado
+- 🔐 JWT - Autenticación
+
+---
+
+## 🔧 Configuración del Backend (PHP/MySQL)
+
+### Requisitos
+- PHP 8.0+
+- MySQL 5.7+
+- Servidor web (Apache/Nginx)
+- Composer (para dependencias)
+
+### Estructura de la Base de Datos
+```sql
+CREATE TABLE `menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(50) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` text,
+  `price` decimal(10,2) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+```
+
+### Endpoints de la API
+
+#### 1. Obtener menú
+- **Método:** GET
+- **URL:** `/api/menu`
+- **Respuesta:** Lista de ítems del menú
+
+#### 2. Crear ítem
+- **Método:** POST
+- **URL:** `/api/menu`
+- **Body:** 
+  ```json
+  {
+    "name": "Hamburguesa Especial",
+    "description": "Descripción del producto",
+    "price": 24.99,
+    "category": "Hamburguesas",
+    "image": "ruta/imagen.jpg"
+  }
+  ```
+
+#### 3. Actualizar ítem
+- **Método:** PUT
+- **URL:** `/api/menu/{id}`
+- **Body:** Misma estructura que creación
+
+#### 4. Eliminar ítem
+- **Método:** DELETE
+- **URL:** `/api/menu/{id}`
+
+---
+
+## 🚀 Instalación y Despliegue
+
+### Frontend
+1. Clonar el repositorio
+2. Instalar dependencias:
+   ```bash
+   npm install
+   ```
+3. Iniciar servidor de desarrollo:
+   ```bash
+   npm run dev
+   ```
+
+### Backend
+1. Configurar base de datos MySQL
+2. Configurar credenciales en `/backend/config.php`
+3. Asegurar permisos de escritura en `/public/images`
+4. Configurar el servidor web para que apunte a la carpeta pública
+
+---
+
+## 🔒 Seguridad
+- Validación de entrada en backend
+- Autenticación JWT
+- Protección contra CSRF
+- CORS configurado
+
+## 📝 Notas para Desarrolladores
+- Las credenciales por defecto para el panel de administración son:
+  - Usuario: admin
+  - Contraseña: 1234
+- Se recomienda cambiar estas credenciales en producción
+- Las imágenes se guardan en `/public/images`
+
+## 📄 Licencia
+Este proyecto está bajo la licencia MIT.
 
 ## 🌟 Características Principales
 

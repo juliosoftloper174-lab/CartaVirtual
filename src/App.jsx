@@ -1,12 +1,28 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import CategoryTabs from "./components/CategoryTabs";
 import MenuSection from "./components/MenuSection";
 import CartPage from "./pages/CartPage";
+import NewLoginPage from "./pages/NewLoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import DashboardPage from "./pages/admin/DashboardPage";
 import { menu } from "./data/menu";
+
+// Componente de ruta protegida
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+  const location = useLocation();
+  
+  if (!isAuthenticated) {
+    // Redirigir al login si no está autenticado
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
 
 function App() {
   const categories = ["Todos", ...new Set(menu.map(item => item.category))];
@@ -17,7 +33,7 @@ function App() {
     : menu.filter(item => item.category === selectedCategory);
 
   return (
-    <Router>
+    <>
       <CartProvider>
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
           <Header className="bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm" />
@@ -82,10 +98,21 @@ function App() {
                 <Footer />
               </>
             } />
+            <Route path="/login" element={<NewLoginPage />} />
+            <Route path="/registro" element={<RegisterPage />} />
+            <Route 
+              path="/admin/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>
       </CartProvider>
-    </Router>
+    </>
   );
 }
 
