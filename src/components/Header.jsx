@@ -31,8 +31,8 @@ export default function Header({ className = '' }) {
               />
               <h1 className="text-2xl font-bold font-display text-white text-center mb-2 hover:text-primary-400 transition-colors">BEMBOS</h1>
             </Link>
-          <div className="w-full border-t border-gray-700 pt-4 group">
-            <p className="text-xl md:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-center animate-gradient-xy">
+          <div className="w-full pt-2 group">
+            <p className="text-[21px] md:text-[23px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-center animate-gradient-xy">
               Sabor en cada bocado!
             </p>
             <div className="w-0 group-hover:w-full h-0.5 bg-gradient-to-r from-yellow-400 to-pink-500 transition-all duration-500 mt-1"></div>
@@ -76,10 +76,10 @@ export default function Header({ className = '' }) {
         <div className="space-y-3 flex-1">
           {/* Botón Ordenar */}
           <Link to="/ordenar" className="block">
-            <button className="w-full flex items-center justify-center space-x-2 bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-4 rounded-lg transition-colors relative overflow-hidden group">
+            <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-2.5 px-4 rounded-lg transition-colors relative overflow-hidden group shadow-lg hover:shadow-xl hover:shadow-red-900/30">
               <span className="relative z-10 flex items-center">
                 <ShoppingBagIcon className="h-5 w-5" />
-                <span className="ml-2 text-sm font-medium animate-text-pulse">¡ORDENAR AHORA!</span>
+                <span className="ml-2 text-sm font-medium animate-text-pulse">¡ORDENA AHORA!</span>
               </span>
               <span className="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></span>
             </button>
