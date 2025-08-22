@@ -29,11 +29,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="erik" />
-                    <option name="lastUsedInstant" value="1755289726" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="master" />
-                    <option name="lastUsedInstant" value="1755289622" />
+                    <option name="lastUsedInstant" value="1755796117" />
                   </RecentBranch>
                 </list>
               </option>
@@ -63,8 +59,8 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "paolo",
-    "last_opened_file_path": "C:/JUAREX-REACT-PRACTICA1",
+    "git-widget-placeholder": "erik",
+    "last_opened_file_path": "C:/JUAREX-CARTA-HAMBURGUESAS-PARTE2",
     "settings.editor.selected.configurable": "advanced.settings"
   }
 }]]></component>

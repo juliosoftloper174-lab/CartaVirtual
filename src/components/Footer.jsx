@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Logo y descripción */}
           <div className="mb-6 md:mb-0">
             <h3 className="text-2xl font-bold text-primary-500 mb-4">Burguer Peru</h3>
-            <p className="text-gray-400 mb-4">Sabor peruano en cada bocado. Las mejores hamburguesas con toques de nuestra gastronomía.</p>
+            <p className="text-gray-400 mb-4">Sabor en cada bocado!</p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <FaFacebook size={20} />

@@ -5,6 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      'display': ['"Bebas Neue"', 'sans-serif'],
+      'sans': ['Inter', 'sans-serif'],
+      'body': ['Poppins', 'sans-serif'],
+    },
     extend: {
       colors: {
         // Colores principales para hamburguesería

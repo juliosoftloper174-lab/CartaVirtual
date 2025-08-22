@@ -1,8 +1,101 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Caveat:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Ocultar barras de desplazamiento */
+html, body, #root {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Ocultar barra de desplazamiento en navegadores WebKit (Chrome, Safari) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar {
+  display: none;
+}
+
+/* Asegurar que el contenido no tenga desplazamiento horizontal */
+body {
+  overflow-x: hidden;
+}
+
+
+/* Animación de pulso lento para efectos de iluminación */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes textPulse {
+  0%, 100% { 
+    opacity: 0.9; 
+    transform: scale(1);
+    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  }
+}
+
+.animate-text-pulse {
+  animation: textPulse 1.5s ease-in-out infinite;
+  display: inline-block;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.animate-shine {
+  animation: shine 1.5s infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* Efecto de elevación 3D */
+.preserve-3d {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+/* Animación de gradiente para textos */
+@keyframes gradient-xy {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-xy {
+  animation: gradient-xy 3s ease infinite;
+  background-size: 200% 200%;
+}
 
 @layer base {
   html {
