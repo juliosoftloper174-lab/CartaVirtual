@@ -60,23 +60,25 @@ function App() {
         
         {/* Contenido principal */}
         <div className="flex-1 ml-[17rem] overflow-y-auto">
-          {/* Sección del video */}
-          <div className="relative h-[70vh] bg-black">
-            <div className="h-full flex items-center">
-              <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="relative" style={{ paddingBottom: '56.25%' }}> {/* 16:9 Aspect Ratio */}
-                  <iframe
-                    className="absolute top-0 left-0 w-full h-full rounded-lg"
-                    src="https://www.youtube.com/embed/bBxl03JzeDY?si=5pLC6m11LxD8P7UF&autoplay=1&mute=1&loop=1&playlist=bBxl03JzeDY&controls=1&showinfo=0&rel=0"
-                    title="Bembos - Experiencia única"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+          {/* Sección del video (solo en la página de inicio) */}
+          {location.pathname === '/' && (
+            <div className="relative h-[70vh] bg-black">
+              <div className="h-full flex items-center">
+                <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="relative" style={{ paddingBottom: '56.25%' }}> {/* 16:9 Aspect Ratio */}
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full rounded-lg"
+                      src="https://www.youtube.com/embed/bBxl03JzeDY?si=5pLC6m11LxD8P7UF&autoplay=1&mute=1&loop=1&playlist=bBxl03JzeDY&controls=1&showinfo=0&rel=0"
+                      title="Bembos - Experiencia única"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Contenido debajo del video */}
           <div className="bg-gradient-to-br from-gray-50 to-gray-100">
