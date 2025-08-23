@@ -98,7 +98,7 @@ export default function Header({ className = '' }) {
               <TypingAnimation 
                 text="Sabor en cada bocado!" 
                 speed={100}
-                className="text-[20px] md:text-[22px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-center"
+                className="text-[18px] xs:text-[19px] sm:text-[20px] md:text-[21px] lg:text-[22px] xl:text-[23px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-center"
               />
               <span className="inline-block w-1 h-6 bg-pink-500 ml-1 animate-pulse"></span>
             </div>
@@ -111,7 +111,7 @@ export default function Header({ className = '' }) {
 
       {/* Información de contacto */}
       <div className="px-4 py-2 text-gray-400 text-sm">
-        <div className="space-y-3">
+        <div className="space-y-6">
           <div className="flex items-start">
             <svg className="h-5 w-5 mr-2 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
