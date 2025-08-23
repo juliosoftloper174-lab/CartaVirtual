@@ -1,7 +1,10 @@
 // React & Router
 import { useState } from "react";
-import { FaWhatsapp } from 'react-icons/fa'; // Ícono oficial de WhatsApp
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { FaWhatsapp, FaShoppingCart } from 'react-icons/fa'; // Íconos
+import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import { Routes, Route, Navigate, useLocation, Link } from "react-router-dom";
+import { useCart } from "./contexts/CartContext";
+import { ShoppingBagIcon } from '@heroicons/react/24/outline';
 
 // Contexts
 import { CartProvider } from "./contexts/CartContext";
@@ -10,11 +13,13 @@ import { CartProvider } from "./contexts/CartContext";
 import Header from "./components/Header";
 import CategoryTabs from "./components/CategoryTabs";
 import MenuSection from "./components/MenuSection";
+import MobileMenu from "./components/MobileMenu";
 
 // Pages
 import CartPage from "./pages/CartPage";
 import NewLoginPage from "./pages/NewLoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import TermsPage from "./pages/TermsPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
 
@@ -40,6 +45,7 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  // No usar useCart aquí, ya que puede causar problemas de contexto
   
   // Categorías del menú
   const categories = ["Todos", ...new Set(menu.map(item => item.category))];
@@ -52,29 +58,29 @@ function App() {
 
   return (
     <CartProvider>
-      <div className="flex h-screen overflow-hidden relative" style={{ WebkitOverflowScrolling: 'touch' }}>
-        {/* Menú lateral fijo */}
-        <div className="w-[17rem] bg-gray-900 text-white fixed left-0 top-0 bottom-0 overflow-hidden z-10">
-          <Header className="h-full flex flex-col" />
-        </div>
-        
+      <div className="flex flex-col h-screen overflow-hidden relative" style={{ WebkitOverflowScrolling: 'touch' }}>
         {/* Contenido principal */}
-        <div className="flex-1 ml-[17rem] overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-20 md:pb-0 md:ml-64 lg:ml-72">
+          {/* Espacio para el menú fijo en escritorio */}
+          <div className="hidden md:block fixed left-0 top-0 bottom-0 w-64 lg:w-72 bg-gray-900 text-white z-20">
+            <Header className="h-full flex flex-col" />
+          </div>
+          
+          {/* Contenido real */}
+          <div className="md:pl-0 w-full">
           {/* Sección del video (solo en la página de inicio) */}
           {location.pathname === '/' && (
-            <div className="relative h-[70vh] bg-black">
-              <div className="h-full flex items-center">
-                <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="relative" style={{ paddingBottom: '56.25%' }}> {/* 16:9 Aspect Ratio */}
-                    <iframe
-                      className="absolute top-0 left-0 w-full h-full rounded-lg"
-                      src="https://www.youtube.com/embed/bBxl03JzeDY?si=5pLC6m11LxD8P7UF&autoplay=1&mute=1&loop=1&playlist=bBxl03JzeDY&controls=1&showinfo=0&rel=0"
-                      title="Bembos - Experiencia única"
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+            <div className="relative h-[70vh] bg-black w-full -mt-16 md:mt-0 flex items-center justify-center overflow-hidden">
+              <div className="w-full max-w-5xl px-4 h-[90%] flex items-center">
+                <div className="relative w-full" style={{ paddingBottom: '56.25%', height: 0 }}>
+                  <iframe
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    src="https://www.youtube.com/embed/bBxl03JzeDY?si=5pLC6m11LxD8P7UF&autoplay=1&mute=1&loop=1&playlist=bBxl03JzeDY&controls=1&showinfo=0&rel=0"
+                    title="Bembos - Experiencia única"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
                 </div>
               </div>
             </div>
@@ -122,13 +128,16 @@ function App() {
                               <div className="h-px flex-1 bg-gradient-to-r from-primary-100 to-transparent"></div>
                             </div>
                           </div>
-                          <div className="mb-2">
+                          <div className="mb-8 text-center">
                             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-gray-900 uppercase tracking-wide text-center">
                               <span className="relative inline-block">
                                 <span className="relative z-10">Nuestro Menú</span>
                                 <span className="absolute -bottom-1.5 left-0 w-full h-1.5 sm:h-2 bg-red-500 -rotate-1 transform -skew-x-6 z-0"></span>
                               </span>
                             </h2>
+                            <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-lg whitespace-nowrap">
+                              Deléitate con nuestras hamburguesas artesanales de gran sabor
+                            </p>
                           </div>
                         </div>
                         <MenuSection items={filteredMenu} />
@@ -140,6 +149,7 @@ function App() {
                 <Route path="/carrito" element={<CartPage />} />
                 <Route path="/login" element={<NewLoginPage />} />
                 <Route path="/registro" element={<RegisterPage />} />
+                <Route path="/terminos" element={<TermsPage />} />
                 <Route path="/admin">
                   <Route 
                     index 
@@ -170,32 +180,35 @@ function App() {
             </div>
           </div>
         </div>
-        
-        {/* Botón flotante de WhatsApp - Oculto en rutas de administración */}
-        {!isAdminRoute && (
-          <a
-            href="https://wa.me/51987654321"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110 z-50 animate-pulse hover:animate-none"
-            aria-label="Chatear por WhatsApp"
-            style={{
-              boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.7)',
-              animation: 'pulse 2s infinite',
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.animation = 'none';
-              e.currentTarget.style.boxShadow = '0 0 0 0 rgba(37, 211, 102, 0.7)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.animation = 'pulse 2s infinite';
-            }}
-          >
-            <FaWhatsapp className="h-10 w-10" />
-          </a>
-        )}
       </div>
-    </CartProvider>
+      
+      {/* Botón flotante de WhatsApp (solo en móviles) */}
+      {!isAdminRoute && (
+        <a
+          href="https://wa.me/51987654321"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed bottom-24 right-4 md:bottom-8 md:right-8 bg-green-500 text-white rounded-full shadow-lg z-50 animate-pulse p-3 md:p-4"
+          style={{
+            animation: 'pulse 2s infinite',
+            bottom: '6rem', // Ajusta la posición vertical del botón
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.animation = 'none';
+            e.currentTarget.style.boxShadow = '0 0 0 0 rgba(37, 211, 102, 0.7)';
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.animation = 'pulse 2s infinite';
+          }}
+        >
+          <FaWhatsapp className="h-10 w-10" />
+        </a>
+      )}
+      
+      {/* Barra de navegación inferior (solo en móviles) */}
+      <MobileMenu />
+    </div>
+  </CartProvider>
   );
 }
 
