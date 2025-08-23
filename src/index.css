@@ -4,6 +4,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Animación de pulso para el botón de WhatsApp */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
 /* Clase personalizada para fondo negro */
 .bg-custom-black {
   background-color: #000000 !important;

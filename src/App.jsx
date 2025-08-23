@@ -177,8 +177,19 @@ function App() {
             href="https://wa.me/51987654321"
             target="_blank"
             rel="noopener noreferrer"
-            className="fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110 z-50"
+            className="fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white w-20 h-20 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 transform hover:scale-110 z-50 animate-pulse hover:animate-none"
             aria-label="Chatear por WhatsApp"
+            style={{
+              boxShadow: '0 0 0 0 rgba(37, 211, 102, 0.7)',
+              animation: 'pulse 2s infinite',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.animation = 'none';
+              e.currentTarget.style.boxShadow = '0 0 0 0 rgba(37, 211, 102, 0.7)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.animation = 'pulse 2s infinite';
+            }}
           >
             <FaWhatsapp className="h-10 w-10" />
           </a>
