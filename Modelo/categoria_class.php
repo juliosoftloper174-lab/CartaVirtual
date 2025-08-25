@@ -30,6 +30,9 @@ class Categoria {
     public function getEstado() {
         return $this->estado;
     }
+    public function setIdCategoria($idCategoria) {
+        $this->idCategoria = $idCategoria;
+    }
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }

@@ -35,6 +35,9 @@ class Cupon {
     public function getestado() {
         return $this->estado;
     }
+    public function setIdCupon($id_cupon) {
+        $this->id_cupon = $id_cupon;
+    }
     public function setCodigo($codigo) {
         $this->codigo = $codigo;
     }
@@ -102,10 +105,10 @@ class Cupon {
     }
 
     // Método para verificar si un cupón es válido para la fecha actual
-    public function verificarCuponValido() {
-        $consulta = "SELECT * FROM cupon WHERE codigo = :codigo AND estado = 'Si' AND fecha_inicio <= NOW()";
+    public function verificarCuponValido($codigo) {
+        $consulta = "SELECT * FROM cupon WHERE codigo = :codigo AND estado = 'Si' AND fecha_fin <= NOW()";
         $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':codigo', $this->codigo);
+        $stmt->bindParam(':codigo', $codigo);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

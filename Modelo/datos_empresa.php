@@ -85,26 +85,10 @@ class Empresa {
         $this->portada_url = $portada_url;
     }
 
-    // Método para actualizar la portada de la empresa
-    public function actualizarPortada() {
-        $consulta = "UPDATE empresa SET portada_url = :portada_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':portada_url', $this->portada_url);
-        return $stmt->execute();
-    }
-
     // Método para eliminar la portada de la empresa
     public function eliminarPortada() {
         $consulta = "UPDATE empresa SET portada_url = NULL";
         $stmt = $this->conexion->prepare($consulta);
-        return $stmt->execute();
-    }
-
-    // Método para actualizar el logo de la empresa
-    public function actualizarLogo() {
-        $consulta = "UPDATE empresa SET logo_url = :logo_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':logo_url', $this->logo_url);
         return $stmt->execute();
     }
 
@@ -115,44 +99,41 @@ class Empresa {
         return $stmt->execute();
     }
 
-    // Método para actualizar el facebook de la empresa
-    public function actualizarFacebook() {
-        $consulta = "UPDATE empresa SET facebook_url = :facebook_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':facebook_url', $this->facebook_url);
-        return $stmt->execute();
-    }
-
-    // Método para actualizar el instagram de la empresa
-    public function actualizarInstagram() {
-        $consulta = "UPDATE empresa SET instagram_url = :instagram_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':instagram_url', $this->instagram_url);
-        return $stmt->execute();
-    }
-
-    // Método para actualizar el TikTok de la empresa
-    public function actualizarTiktok() {
-        $consulta = "UPDATE empresa SET tiktok_url = :tiktok_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(':tiktok_url', $this->tiktok_url);
-        return $stmt->execute();
-    }
-
-    // Método para actualizar el video de presentación de la empresa
-    public function actualizarVideoPresentacion() {
-        $consulta = "UPDATE empresa SET video_pres_url = :video_pres_url";
-        $stmt = $this->conexion->prepare($consulta);
-        $stmt->bindParam(":video_pres_url", $this->video_pres_url);
-        return $stmt->execute();
-    }
-
-    // Método para listar los datos de la empresa: direccion, telefono, horario
+    // Método para listar los datos de la empresa: ubicacion, telefono, horario
     public function MostrarDatosEmpresa() {
-        $consulta = "SELECT direccion, telefono, horario FROM empresa";
+        $consulta = "SELECT nombre, telefono, ubicacion, horario, tiktok_url, facebook_url, instagram_url, video_pres_url, logo_url, portada_url FROM empresa";
         $stmt = $this->conexion->prepare($consulta);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Método para actualizar los datos de la empresa
+    public function actualizarDatosEmpresa() {
+        $consulta = "UPDATE empresa SET
+            nombre = :nombre,
+            telefono = :telefono,
+            ubicacion = :ubicacion,
+            horario = :horario,
+            tiktok_url = :tiktok_url,
+            facebook_url = :facebook_url,
+            instagram_url = :instagram_url,
+            video_pres_url = :video_pres_url,
+            logo_url = :logo_url,
+            portada_url = :portada_url
+            WHERE id_empresa = 1"; // Esto es así ya que solo hay un registro en la tabla empresa
+
+            $stmt = $this->conexion->prepare($consulta);
+            $stmt->bindParam(':nombre', $this->nombre);
+            $stmt->bindParam(':telefono', $this->telefono);
+            $stmt->bindParam(':ubicacion', $this->ubicacion);
+            $stmt->bindParam(':horario', $this->horario);
+            $stmt->bindParam(':tiktok_url', $this->tiktok_url);
+            $stmt->bindParam(':facebook_url', $this->facebook_url);
+            $stmt->bindParam(':instagram_url', $this->instagram_url);
+            $stmt->bindParam(':video_pres_url', $this->video_pres_url);
+            $stmt->bindParam(':logo_url', $this->logo_url);
+            $stmt->bindParam(':portada_url', $this->portada_url);
+            $stmt->execute();
     }
 }
 ?>
