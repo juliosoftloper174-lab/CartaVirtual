@@ -8,14 +8,23 @@ export default function CategoryTabs({ selected, onSelect }) {
   // Traer categorías desde el controlador PHP
   useEffect(() => {
     fetch(
-      "http://localhost/cartavirtualCat/controlador/categoriaControlador.php?action=getAll"
+      "http://localhost/cartavirtualbackend/controlador/categoriaControlador.php?action=getAll"
     )
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener categorías");
         return res.json();
       })
       .then((data) => {
-        setCategories(data);
+        // Agregar la categoría "Todos" al inicio
+        const categoriesWithAll = [
+          {
+            id_categoria: 0,
+            nombre: "Todos", // 👈 aquí corregido
+            imagen_url: "/images/banner.png",
+          },
+          ...data,
+        ];
+        setCategories(categoriesWithAll);
         setLoading(false);
       })
       .catch((err) => {
