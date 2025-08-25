@@ -72,6 +72,16 @@ const DashboardPage = () => {
             >
               Categorías
             </Link>
+            <Link
+              to="/admin/settings"
+              className={`px-4 py-2 text-sm font-medium ${
+                location.pathname === "/admin/settings"
+                  ? "border-b-2 border-black text-black"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Configuración
+            </Link>
           </nav>
         </div>
       </header>

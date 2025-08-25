@@ -22,6 +22,7 @@ import RegisterPage from "./pages/RegisterPage";
 import TermsPage from "./pages/TermsPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
+import SettingsPage from "./pages/admin/SettingsPage";
 
 // Data
 import { menu } from "./data/menu";
@@ -172,6 +173,14 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <CategoriesPage />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="settings" 
+                    element={
+                      <ProtectedRoute>
+                        <SettingsPage />
                       </ProtectedRoute>
                     } 
                   />
