@@ -8,7 +8,7 @@ export default function CategoryTabs({ selected, onSelect }) {
   // Traer categorías desde el controlador PHP
   useEffect(() => {
     fetch(
-      "http://localhost/CartaVirtual/controlador/CategoriaController.php?action=getAll"
+      "http://localhost/cartavirtualCat/controlador/categoriaControlador.php?action=getAll"
     )
       .then((res) => {
         if (!res.ok) throw new Error("Error al obtener categorías");
