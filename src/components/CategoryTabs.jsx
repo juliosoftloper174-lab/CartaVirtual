@@ -1,65 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 
-const categoryIcons = {
-  'Todos': '🍔',
-  'Hamburguesas': '🍔',
-  'Clásicas': '🍟',
-  'Bebidas': '🥤',
-  'Combos': '🍱',
-  'Pollos': '🍗',
-  'Parrillas': '🥩',
-  'Postres': '🍰',
-  'Ensaladas': '🥗',
-  'Infantil': '👶'
-};
+export default function CategoryTabs({ selected, onSelect }) {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const categoryOrder = {
-  'Todos': 0,
-  'Hamburguesas': 1,
-  'Clásicas': 2,
-  'Bebidas': 3,
-  'Combos': 4,
-  'Postres': 5,
-  'Ensaladas': 6,
-  'Infantil': 7
-};
+  // Traer categorías desde el controlador PHP
+  useEffect(() => {
+    fetch(
+      "http://localhost/cartavirtualbackend/controlador/categoriaControlador.php?action=getAll"
+    )
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al obtener categorías");
+        return res.json();
+      })
+      .then((data) => {
+        // Agregar la categoría "Todos" al inicio
+        const categoriesWithAll = [
+          {
+            id_categoria: 0,
+            nombre: "Todos", // 👈 aquí corregido
+            imagen_url: "/images/banner.png",
+          },
+          ...data,
+        ];
+        setCategories(categoriesWithAll);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("No se pudieron cargar las categorías");
+        setLoading(false);
+      });
+  }, []);
 
-export default function CategoryTabs({ categories, selected, onSelect }) {
-  // Filtrar categorías no deseadas
-  const filteredCategories = categories.filter(category => category !== 'Parrillas' && category !== 'Pollos');
-  
-  // Separar 'Todos' del resto de categorías
-  const todosCategory = filteredCategories.find(cat => cat === 'Todos');
-  const otherCategories = filteredCategories.filter(cat => cat !== 'Todos');
-  
-  // Ordenar las demás categorías según el orden definido
-  const sortedOtherCategories = [...otherCategories].sort((a, b) => {
-    return (categoryOrder[a] || 99) - (categoryOrder[b] || 99);
-  });
-  
-  // Combinar 'Todos' primero y luego el resto de categorías ordenadas
-  const sortedCategories = todosCategory ? [todosCategory, ...sortedOtherCategories] : sortedOtherCategories;
+  if (loading) return <p>Cargando categorías...</p>;
+  if (error) return <p>{error}</p>;
+  if (!categories.length) return <p>No hay categorías disponibles</p>;
 
   return (
-    <div className="w-full">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-        {sortedCategories.map((category) => (
-          <button
-            key={category}
-            onClick={() => onSelect(category)}
-            className={`group flex flex-col items-center justify-center p-4 rounded-2xl transition-all duration-300 transform hover:-translate-y-1
-              ${selected === category 
-                ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg ring-2 ring-primary-400' 
-                : 'bg-white text-gray-700 shadow-sm hover:shadow-md hover:ring-1 hover:ring-gray-200'}
-              w-full h-full aspect-square`}
-          >
-            <span className={`text-5xl mb-3 transition-transform duration-300 group-hover:scale-110 ${selected === category ? 'text-white' : 'text-primary-500'}`}>
-              {categoryIcons[category] || '🍽️'}
-            </span>
-            <span className={`font-semibold text-center ${selected === category ? 'text-white' : 'text-gray-700'}`}>
-              {category}
-            </span>
-          </button>
+    <div className="w-full p-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
+        {categories.map((cat) => (
+          <div key={cat.id_categoria} className="group">
+            <button
+              onClick={() => onSelect(cat.nombre)}
+              className="w-full h-full flex flex-col items-center focus:outline-none"
+            >
+              <div className="relative w-full aspect-square mb-3 overflow-hidden rounded-2xl shadow-lg transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:rotate-1 hover:scale-[1.02]">
+                <img
+                  src={cat.imagen_url || "/images/banner.png"}
+                  alt={cat.nombre}
+                  className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-110"
+                />
+                <div
+                  className={`absolute inset-0 rounded-2xl border-2 transition-all duration-500 ${
+                    selected === cat.nombre
+                      ? "border-primary-500 shadow-[0_0_15px_rgba(236,72,153,0.7)]"
+                      : "border-white/30 group-hover:border-white/60 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                  }`}
+                ></div>
+              </div>
+              <div className="relative px-2 text-center">
+                <span
+                  className={`relative text-sm sm:text-base font-semibold ${
+                    selected === cat.nombre
+                      ? "text-primary-600"
+                      : "text-gray-800"
+                  } group-hover:text-primary-500 transition-colors duration-300`}
+                >
+                  {cat.nombre}
+                </span>
+              </div>
+            </button>
+          </div>
         ))}
       </div>
     </div>
