@@ -95,9 +95,9 @@ export default function Header({ className = '' }) {
               <TypingAnimation 
                 text="Sabor en cada bocado!" 
                 speed={100}
-                className="text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"
+                className="text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600"
               />
-              <span className="inline-block w-1 h-3 bg-pink-500 ml-1 animate-pulse"></span>
+              <span className="inline-block w-1 h-3 bg-orange-600 ml-1 animate-pulse"></span>
             </div>
           </div>
         </Link>
@@ -118,9 +118,9 @@ export default function Header({ className = '' }) {
                 <TypingAnimation 
                   text="Sabor en cada bocado!" 
                   speed={100}
-                  className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 text-center"
+                  className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600 text-center"
                 />
-                <span className="inline-block w-1 h-5 bg-pink-500 ml-1 animate-pulse"></span>
+                <span className="inline-block w-1 h-5 bg-orange-600 ml-1 animate-pulse"></span>
               </div>
             </div>
           </Link>
@@ -170,7 +170,7 @@ export default function Header({ className = '' }) {
           <div className="space-y-3">
             {/* Botón Ordenar */}
             <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="block">
-              <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-2.5 px-4 rounded-lg transition-colors relative overflow-hidden group shadow-lg hover:shadow-xl hover:shadow-red-900/30">
+              <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-300 relative overflow-hidden group shadow-lg hover:shadow-xl hover:shadow-orange-900/40">
                 <span className="relative z-10 flex items-center">
                   <ShoppingBagIcon className="h-5 w-5" />
                   <span className="ml-2 text-sm font-medium animate-text-pulse">¡ORDENA AHORA!</span>

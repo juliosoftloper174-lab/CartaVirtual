@@ -94,12 +94,11 @@ function App() {
                   path="/" 
                   element={
                     <div className="space-y-8">
-                      <div className="text-center max-w-3xl mx-auto">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="food-splatter">
-                              Explora
-                            </span>
-                          <div className="h-px flex-1 bg-gradient-to-r from-primary-100 to-transparent"></div>
+                      <div className="px-4 sm:px-6">
+                        <div className="mb-2">
+                          <span className="food-splatter">
+                            Explora
+                          </span>
                         </div>
                         <div className="mb-4">
                           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-gray-900 uppercase tracking-wide">
@@ -109,33 +108,30 @@ function App() {
                             </span>
                           </h2>
                         </div>
-                        <p className="text-gray-500 text-base sm:text-lg max-w-2xl mx-auto mb-8">
+                        <p className="text-gray-500 text-base sm:text-lg mb-8">
                           Descubre nuestra variedad de opciones deliciosas
                         </p>
-                      </div>
-                      <div className="px-4 sm:px-6">
                         <CategoryTabs 
                           categories={categories} 
                           selected={selectedCategory} 
                           onSelect={setSelectedCategory} 
                         />
+                      </div>
+                      <div className="px-4 sm:px-6">
                         <div className="mt-12 mb-8">
-                          <div className="flex justify-center mb-2">
-                            <div className="flex items-center gap-2 w-full max-w-2xl px-4">
-                              <span className="food-splatter red-splatter">
-                                Prueba
-                              </span>
-                              <div className="h-px flex-1 bg-gradient-to-r from-primary-100 to-transparent"></div>
-                            </div>
+                          <div className="mb-2 px-4">
+                            <span className="food-splatter">
+                              Nuestro Menú
+                            </span>
                           </div>
-                          <div className="mb-8 text-center">
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-gray-900 uppercase tracking-wide text-center">
+                          <div className="mb-8 text-left">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display text-gray-900 uppercase tracking-wide">
                               <span className="relative inline-block">
                                 <span className="relative z-10">Nuestro Menú</span>
-                                <span className="absolute -bottom-1.5 left-0 w-full h-1.5 sm:h-2 bg-red-500 -rotate-1 transform -skew-x-6 z-0"></span>
+                                <span className="absolute -bottom-1.5 left-0 w-full h-1.5 sm:h-2 bg-yellow-400 -rotate-1 transform -skew-x-6 z-0"></span>
                               </span>
                             </h2>
-                            <p className="mt-4 text-gray-600 max-w-2xl mx-auto text-lg whitespace-nowrap">
+                            <p className="mt-4 text-gray-600 text-lg">
                               Deléitate con nuestras hamburguesas artesanales de gran sabor
                             </p>
                           </div>

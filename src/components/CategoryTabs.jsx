@@ -1,16 +1,15 @@
 import React from 'react';
 
-const categoryIcons = {
-  'Todos': '🍔',
-  'Hamburguesas': '🍔',
-  'Clásicas': '🍟',
-  'Bebidas': '🥤',
-  'Combos': '🍱',
-  'Pollos': '🍗',
-  'Parrillas': '🥩',
-  'Postres': '🍰',
-  'Ensaladas': '🥗',
-  'Infantil': '👶'
+// No more emojis, we'll use a cleaner design
+const categoryColors = {
+  'Todos': 'from-blue-400 to-indigo-500',
+  'Hamburguesas': 'from-amber-500 to-red-500',
+  'Clásicas': 'from-yellow-400 to-orange-500',
+  'Bebidas': 'from-sky-400 to-blue-600',
+  'Combos': 'from-purple-400 to-pink-500',
+  'Postres': 'from-pink-400 to-rose-500',
+  'Ensaladas': 'from-emerald-400 to-teal-500',
+  'Infantil': 'from-fuchsia-400 to-purple-500'
 };
 
 const categoryOrder = {
@@ -42,72 +41,83 @@ export default function CategoryTabs({ categories, selected, onSelect }) {
 
   // Mapeo de categorías a imágenes de fondo
   const categoryBackgrounds = {
-    'Todos': '/images/images (17).jpeg',
-    'Hamburguesas': '/images/images (10).jpeg',
+    'Todos': '/images/images (18).jpeg' + '?v=' + new Date().getTime(),
+    'Hamburguesas': '/images/images (8).jpeg' + '?v=' + new Date().getTime(),
     'Clásicas': '/images/images (11).jpeg',
-    'Bebidas': '/images/images (12).jpeg',
+    'Bebidas': '/images/bebidas.jpg',
     'Combos': '/images/images (13).jpeg',
-    'Postres': '/images/images (14).jpeg',
+    'Postres': '/images/postres.jpg',
     'Ensaladas': '/images/images (15).jpeg',
     'Infantil': '/images/images (16).jpeg'
   };
 
   return (
-    <div className="w-full p-6 max-w-7xl mx-auto">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
-        {sortedCategories.map((category) => (
-          <div key={category} className="group">
+    <div className="w-full p-4 sm:p-6 max-w-7xl mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+        {sortedCategories.map((category, index) => (
+          <div key={category} className="group relative">
             <button
               onClick={() => onSelect(category)}
-              className="w-full h-full flex flex-col items-center focus:outline-none"
+              className="w-full flex flex-col items-center focus:outline-none"
             >
-              <div className="relative w-full aspect-square mb-3 overflow-hidden rounded-2xl shadow-lg transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:rotate-1 hover:scale-[1.02]">
-                {/* Efecto de brillo al pasar el cursor */}
-                <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 transform -translate-x-full group-hover:translate-x-full"></div>
-                </div>
-                
-                {/* Imagen con efecto de zoom y brillo mejorado */}
-                <div className="relative w-full h-full overflow-hidden rounded-2xl">
+              <div className="relative w-full aspect-square overflow-hidden rounded-xl transition-all duration-300 ease-out group-hover:shadow-lg group relative hover:category-pulse">
+                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-amber-400/50 transition-all duration-300 ease-out z-20 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+                {/* Image container */}
+                <div className="relative w-full h-full">
                   <img 
                     src={categoryBackgrounds[category] || '/images/banner.png'} 
                     alt={category}
-                    className="w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 group-hover:brightness-110"
-                    style={{ transformStyle: 'preserve-3d', backfaceVisibility: 'hidden' }}
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                   
-                  {/* Overlay de gradiente con animación */}
-                  <div className={`absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent transition-all duration-700 group-hover:from-black/70 group-hover:via-black/30 ${
-                    selected === category ? 'ring-2 ring-primary-500 ring-offset-2' : ''
-                  }`}></div>
-                  
-                  {/* Efecto de iluminación en las esquinas */}
-                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                    <div className="absolute top-0 left-0 w-16 h-16 -mt-4 -ml-4 bg-white/10 rounded-full filter blur-xl opacity-0 group-hover:opacity-100 group-hover:animate-pulse-slow"></div>
-                    <div className="absolute bottom-0 right-0 w-16 h-16 -mb-4 -mr-4 bg-white/10 rounded-full filter blur-xl opacity-0 group-hover:opacity-100 group-hover:animate-pulse-slow group-hover:animation-delay-300"></div>
-                  </div>
+                  {/* Simple overlay */}
+                  <div className={`absolute inset-0 ${
+                    selected === category ? 'bg-black/20' : 'bg-black/10 group-hover:bg-black/20'
+                  } transition-colors duration-200`}></div>
                 </div>
                 
-                {/* Efecto de borde con resplandor */}
-                <div className={`absolute inset-0 rounded-2xl border-2 transition-all duration-500 ${
-                  selected === category 
-                    ? 'border-primary-500 shadow-[0_0_15px_rgba(236,72,153,0.7)]' 
-                    : 'border-white/30 group-hover:border-white/60 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.3)]'
+                {/* Selection indicator */}
+                {selected === category && (
+                  <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary-400 flex items-center justify-center">
+                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )}
+                
+                {/* Category indicator */}
+                <div className={`absolute bottom-0 left-0 w-full h-1 ${
+                  selected === category ? 'bg-primary-400' : 'bg-gray-300'
+                }`}></div>
+                
+                {/* Category indicator with gradient */}
+                <div className={`absolute bottom-0 left-0 w-full h-1.5 bg-gradient-to-r ${
+                  categoryColors[category] || 'from-gray-400 to-gray-600'
+                } rounded-b-lg transition-all duration-500 ${
+                  selected === category ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                 }`}></div>
               </div>
-              
-              {/* Título con efecto de subrayado */}
-              <div className="relative px-2 text-center">
-                <span className={`relative text-sm sm:text-base font-semibold ${
-                  selected === category ? 'text-primary-600' : 'text-gray-800'
-                } group-hover:text-primary-500 transition-colors duration-300`}>
-                  {category}
-                  <span className={`absolute bottom-0 left-0 w-0 h-0.5 bg-primary-500 transition-all duration-300 ${
-                    selected === category ? 'w-full' : 'group-hover:w-full'
-                  }`}></span>
-                </span>
-              </div>
             </button>
+
+            {/* Enhanced category name with modern typography */}
+            <div className="w-full px-1 mt-2">
+              <div className="relative h-10 flex items-start">
+                <h3 className={`text-[15.5px] sm:text-[16.5px] font-sans font-bold text-left w-full tracking-tight ${
+                  selected === category 
+                    ? 'text-gray-900' 
+                    : 'text-gray-800 group-hover:text-gray-900'
+                } transition-all duration-300 leading-tight`}>
+                  {category}
+                </h3>
+                
+                {/* Simple divider for selected category */}
+                {selected === category && (
+                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gray-300 rounded-full"></div>
+                )}
+              </div>
+            </div>
+            
           </div>
         ))}
       </div>
