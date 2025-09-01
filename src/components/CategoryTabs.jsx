@@ -9,7 +9,8 @@ const categoryColors = {
   'Combos': 'from-purple-400 to-pink-500',
   'Postres': 'from-pink-400 to-rose-500',
   'Ensaladas': 'from-emerald-400 to-teal-500',
-  'Infantil': 'from-fuchsia-400 to-purple-500'
+  'Infantil': 'from-fuchsia-400 to-purple-500',
+  'Especiales': 'from-rose-500 to-pink-600'
 };
 
 const categoryOrder = {
@@ -20,7 +21,8 @@ const categoryOrder = {
   'Combos': 4,
   'Postres': 5,
   'Ensaladas': 6,
-  'Infantil': 7
+  'Infantil': 7,
+  'Especiales': 8
 };
 
 export default function CategoryTabs({ categories, selected, onSelect }) {
@@ -48,7 +50,8 @@ export default function CategoryTabs({ categories, selected, onSelect }) {
     'Combos': '/images/images (13).jpeg',
     'Postres': '/images/postres.jpg',
     'Ensaladas': '/images/images (15).jpeg',
-    'Infantil': '/images/images (16).jpeg'
+    'Infantil': '/images/images (16).jpeg',
+    'Especiales': '/images/imagen23.jpeg'
   };
 
   return (
@@ -60,8 +63,8 @@ export default function CategoryTabs({ categories, selected, onSelect }) {
               onClick={() => onSelect(category)}
               className="w-full flex flex-col items-center focus:outline-none"
             >
-              <div className="relative w-full aspect-square overflow-hidden rounded-xl transition-all duration-300 ease-out group-hover:shadow-lg group relative hover:category-pulse">
-                <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-amber-400/50 transition-all duration-300 ease-out z-20 pointer-events-none"></div>
+              <div className="relative w-full aspect-square overflow-hidden rounded-[15px] transition-all duration-300 ease-out group-hover:shadow-lg group relative hover:category-pulse">
+                <div className="absolute inset-0 rounded-[15px] border-2 border-transparent group-hover:border-amber-400/50 transition-all duration-300 ease-out z-20 pointer-events-none"></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                 {/* Image container */}
                 <div className="relative w-full h-full">

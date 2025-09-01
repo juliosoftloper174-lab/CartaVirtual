@@ -1,5 +1,13 @@
 export const menu = [
   {
+    id: 100,
+    category: 'Especiales',
+    name: 'Bembos Especial',
+    description: 'Nuestra hamburguesa premium con doble carne, queso azul, cebolla caramelizada y salsa especial de la casa',
+    price: 32.90,
+    image: '/images/imagen23.jpeg'
+  },
+  {
     id: 1,
     category: 'Hamburguesas',
     name: 'Clásica Peruana',
