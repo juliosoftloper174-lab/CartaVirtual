@@ -17,6 +17,25 @@
   }
 }
 
+/* Animación para el efecto blob */
+@keyframes blob {
+  0% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  }
+  25% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  75% {
+    border-radius: 40% 60% 30% 70% / 60% 50% 60% 40%;
+  }
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+  }
+}
+
 /* Animación para el resplandor neon de las categorías */
 @keyframes borderPulse {
   0% {
@@ -355,6 +374,19 @@ body {
 }
 
 @layer components {
+  /* Animación Blob */
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+  
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
   /* Botones */
   .btn {
     @apply inline-flex items-center justify-center rounded-xl text-sm font-medium transition-all 

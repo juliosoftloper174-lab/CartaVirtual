@@ -63,16 +63,20 @@ export default function CategoryTabs({ categories, selected, onSelect }) {
               onClick={() => onSelect(category)}
               className="w-full flex flex-col items-center focus:outline-none"
             >
-              <div className="relative w-full aspect-square overflow-hidden rounded-[15px] transition-all duration-300 ease-out group-hover:shadow-lg group relative hover:category-pulse">
-                <div className="absolute inset-0 rounded-[15px] border-2 border-transparent group-hover:border-amber-400/50 transition-all duration-300 ease-out z-20 pointer-events-none"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-                {/* Image container */}
-                <div className="relative w-full h-full">
+              <div className="relative w-full aspect-square group">
+                {/* Blob effect background */}
+                <div className="absolute inset-0 z-0">
+                  <div className={`absolute inset-0 rounded-[60%_40%_30%_70%_/_60%_30%_70%_40%] bg-gradient-to-br ${categoryColors[category] || 'from-gray-400 to-gray-600'} opacity-20`}></div>
+                </div>
+                
+                {/* Image container with blob shape */}
+                <div className="relative w-full h-full overflow-hidden rounded-[60%_40%_30%_70%_/_60%_30%_70%_40%] border-2 border-white/80 shadow-lg transition-all duration-500 ease-out group-hover:scale-105 hover:rounded-[40%_60%_50%_50%_/_40%_50%_50%_60%]">
                   <img 
                     src={categoryBackgrounds[category] || '/images/banner.png'} 
                     alt={category}
-                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                   
                   {/* Simple overlay */}
                   <div className={`absolute inset-0 ${

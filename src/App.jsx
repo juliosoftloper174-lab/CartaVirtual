@@ -127,13 +127,29 @@ function App() {
                     
                     <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
                       <div className="flex flex-col lg:flex-row">
-                        {/* Imagen */}
-                        <div className="lg:w-1/2 h-96 lg:h-auto overflow-hidden">
-                          <img 
-                            src="/images/imagen23.jpeg" 
-                            alt="La Especialidad de la Casa" 
-                            className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700"
-                          />
+                        {/* Imagen con borde blob en un solo lado */}
+                        <div className="lg:w-1/2 h-96 lg:h-auto flex items-center justify-center p-8">
+                          <div className="relative w-full h-full max-w-md">
+                            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-l-3xl rounded-r-[60%_40%_40%_60%] animate-pulse"></div>
+                            <div className="relative w-full h-full overflow-hidden">
+                              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                              <img 
+                                src="/images/imagen23.jpeg" 
+                                alt="La Especialidad de la Casa" 
+                                className="w-full h-full object-cover object-left transform hover:scale-105 transition-all duration-700"
+                                style={{
+                                  clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 20% 45%, 20% 55%, 0% 50%)',
+                                  WebkitClipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 20% 45%, 20% 55%, 0% 50%)',
+                                  borderTopLeftRadius: '1rem',
+                                  borderBottomLeftRadius: '1rem',
+                                  borderTopRightRadius: '60% 40%',
+                                  borderBottomRightRadius: '40% 60%',
+                                  border: '4px solid white',
+                                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+                                }}
+                              />
+                            </div>
+                          </div>
                         </div>
                         
                         {/* Contenido */}
