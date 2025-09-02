@@ -84,7 +84,7 @@ export default function Header({ className = '' }) {
               />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">BEMBOS</h1>
+              <h1 className="text-2xl md:text-4xl font-extrabold text-white leading-tight">BEMBOS</h1>
               <div className="flex items-center">
                 <TypingAnimation 
                   text="Sabor en cada bocado!" 

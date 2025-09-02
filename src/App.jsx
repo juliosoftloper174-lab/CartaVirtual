@@ -72,19 +72,31 @@ function App() {
             {/* Sección del video (solo en la página de inicio) */}
             {location.pathname === '/' && (
               <>
-                <div className="relative h-[85vh] bg-black w-full flex items-center justify-center overflow-hidden">
-                  <div className="w-full max-w-5xl px-4 h-[95%] flex items-center">
-                    <div className="relative w-full" style={{ paddingBottom: '56.25%', height: 0 }}>
-                      <iframe
-                        className="absolute top-0 left-0 w-full h-full rounded-lg"
-                        src="https://www.youtube.com/embed/bBxl03JzeDY?si=5pLC6m11LxD8P7UF&autoplay=1&mute=1&loop=1&playlist=bBxl03JzeDY&controls=1&showinfo=0&rel=0"
-                        title="Bembos - Experiencia única"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
+                <div className="relative w-full bg-black overflow-hidden flex items-center justify-center" style={{ height: '70vh', minHeight: '500px' }}>
+                  <video 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover"
+                  >
+                    <source src="/images/hamburguesa.mp4" type="video/mp4" />
+                    Tu navegador no soporta el elemento de video.
+                  </video>
+                  
+                  {/* Lema sobre el video */}
+                  <div className="relative z-10 text-center px-4">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
+                      <span className="block">LAS MEJORES HAMBURGUESAS</span>
+                      <span className="text-orange-400">DE LA CIUDAD</span>
+                    </h2>
+                    <p className="text-xl md:text-2xl text-white font-medium bg-black bg-opacity-50 inline-block px-6 py-2 rounded-full">
+                      ¡Sabor que enamora en cada bocado!
+                    </p>
                   </div>
+                  
+                  {/* Overlay oscuro para mejor legibilidad */}
+                  <div className="absolute inset-0 bg-black bg-opacity-30"></div>
                 </div>
                 
                 {/* Barra de acción con botones e información de contacto */}
@@ -130,16 +142,21 @@ function App() {
                         {/* Imagen con borde blob en un solo lado */}
                         <div className="lg:w-1/2 h-96 lg:h-auto flex items-center justify-center p-8">
                           <div className="relative w-full h-full max-w-md">
-                            <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-l-3xl rounded-r-[60%_40%_40%_60%] animate-pulse"></div>
-                            <div className="relative w-full h-full overflow-hidden">
-                              <div className="absolute inset-0 bg-gradient-to-br from-yellow-400 to-amber-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                            {/* Borde estático */}
+                            <div className="absolute inset-0 bg-white rounded-l-3xl rounded-r-[60%_40%_40%_60%]"></div>
+                            <div className="relative w-full h-full overflow-hidden bg-white">
+                              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
                               <img 
-                                src="/images/imagen23.jpeg" 
+                                src="/images/images (18).jpeg" 
                                 alt="La Especialidad de la Casa" 
-                                className="w-full h-full object-cover object-left transform hover:scale-105 transition-all duration-700"
+                                className="w-full h-full object-cover object-left transform hover:scale-102 transition-all duration-500" 
+                                loading="eager"
                                 style={{
                                   clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 20% 45%, 20% 55%, 0% 50%)',
                                   WebkitClipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%, 20% 45%, 20% 55%, 0% 50%)',
+                                  imageRendering: '-webkit-optimize-contrast',
+                                  transform: 'translateZ(0)',
+                                  backfaceVisibility: 'hidden',
                                   borderTopLeftRadius: '1rem',
                                   borderBottomLeftRadius: '1rem',
                                   borderTopRightRadius: '60% 40%',
