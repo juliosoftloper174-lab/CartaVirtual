@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { Routes, Route, useLocation } from "react-router-dom";
 import SplitText from "./resources/SplitText";
+import BlurText from "./resources/BlurText";
 
 
 // Contexts
@@ -22,6 +23,7 @@ import RegisterPage from "./pages/RegisterPage";
 import TermsPage from "./pages/TermsPage";
 import DashboardPage from "./pages/admin/DashboardPage";
 import CategoriesPage from "./pages/admin/CategoriesPage";
+import { PiBlueprintThin } from "react-icons/pi";
 
 // Componente de ruta protegida (temporalmente desactivada para pruebas)
 const ProtectedRoute = ({ children }) => children;
@@ -110,19 +112,24 @@ function App() {
                     Tu navegador no soporta el elemento de video.
                   </video>
                   <div className="relative z-10 text-center px-4">
-  <div className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-    <SplitText
-      text="prueba123445"
+  <div>
+    <BlurText
+      text="LAS MEJORES HAMBURGUESAS"
       tag="h1"
-      className="block"
+      className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg"
       splitType="chars"   // letras una por una
       delay={80}          // 80ms entre letras
     />
   </div>
-
-  <p className="text-xl md:text-2xl text-white font-medium bg-black bg-opacity-50 inline-block px-6 py-2 rounded-full">
-    ¡Sabor que enamora en cada bocado!
+<p className="text-xl md:text-2xl text-white font-medium bg-black bg-opacity-50 inline-block px-6 py-2 rounded-full">
+    <SplitText
+    text="¡Sabor que enamora en cada bocado!"
+    className="text-orange-500"
+    splitType="chars"   // letras una por una
+    delay={80}          // 80ms entre letras
+    />
   </p>
+  
 </div>
                   <div className="absolute inset-0 bg-black bg-opacity-30"></div>
                 </div>
