@@ -1,56 +1,166 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrolled]);
+
+  const navItems = [
+    { id: 1, name: 'Menú', link: '#menu' },
+    { id: 2, name: 'Promociones', link: '#promociones' },
+    { id: 3, name: 'Locales', link: '#locales' },
+  ];
 
   return (
-    <header className="w-[96%] mx-auto bg-[#0F1880] rounded-t-2xl rounded-b-2xl shadow-md px-4 py-0 mt-2">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between">
-        {/* Logo Placeholder */}
-        <div className="flex items-center min-w-[60px]">
-              <img src="/images/bembos.webp" alt="Logo Bembos" className="w-[100px] h-[100px] object-contain" />
+    <header 
+      className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 w-[88%]`}
+      style={{
+        transform: 'translateX(-50%)',
+        animation: 'slideDown 0.5s ease-out'
+      }}
+    >
+      <style jsx>{`
+        @keyframes slideDown {
+          from { transform: translate(-50%, -100%); opacity: 0; }
+          to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .nav-link {
+          transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+          transform: translateY(-2px);
+        }
+        .menu-enter {
+          opacity: 0;
+          max-height: 0;
+        }
+        .menu-enter-active {
+          opacity: 1;
+          max-height: 500px;
+          transition: all 0.3s ease-in-out;
+        }
+        .menu-exit {
+          opacity: 1;
+          max-height: 500px;
+        }
+        .menu-exit-active {
+          opacity: 0;
+          max-height: 0;
+          transition: all 0.3s ease-in-out;
+        }
+      `}</style>
+
+      <nav className="relative flex items-center justify-between p-2 bg-[#0F1880] rounded-full shadow-lg overflow-visible">
+        {/* Logo */}
+        <div className="flex-shrink-0 z-10 hover:scale-105 transition-transform -mt-8 -mb-8 ml-4">
+          <img 
+            src="/images/bembos.webp" 
+            alt="Logo Bembos" 
+            className={`w-32 h-32 object-contain transition-all duration-300 ${
+              scrolled ? 'scale-90' : 'scale-100'
+            }`} 
+          />
         </div>
-        {/* Center Links */}
-        <ul className="hidden md:flex gap-8 items-center mx-auto">
-          <li><a href="#menu" className="text-white font-bold text-xl hover:underline">Menú</a></li>
-          <li><a href="#promociones" className="text-white font-bold text-xl hover:underline">Promociones</a></li>
-          <li><a href="#locales" className="text-white font-bold text-xl hover:underline">Locales</a></li>
-        </ul>
-        {/* Right Block */}
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex flex-col items-end mr-2 min-w-[90px]">
-            <span className="text-white text-xs">Hola</span>
-            <span className="text-white font-semibold text-sm cursor-pointer">Mi Cuenta <span className="text-xs">▼</span></span>
+
+        {/* Right Section with Navigation and User Controls */}
+        <div className="flex items-center space-x-4">
+          {/* Desktop Navigation - Moved to the right */}
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={item.link}
+                className="nav-link px-4 py-2 text-white font-medium rounded-full hover:bg-white/20 hover:text-white"
+              >
+                {item.name}
+              </a>
+            ))}
           </div>
-          {/* Cart Button */}
-          <button className="relative w-10 h-10 bg-white rounded-full flex items-center justify-center shadow hover:bg-blue-100 transition">
-            {/* Cart Icon (SVG) */}
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-[#0033A0]">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m13-9l2 9m-5-9V6a2 2 0 10-4 0v3" />
-            </svg>
-            <span className="absolute -top-1 -right-1 bg-[#0F1880] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
-          </button>
-          {/* Hamburger for mobile */}
-          <button className="md:hidden ml-2" onClick={() => setMenuOpen(!menuOpen)}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-white">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+
+          {/* User Controls */}
+          <div className="flex items-center space-x-2">
+            {/* Account */}
+            <div className="hidden md:flex items-center space-x-2 bg-white/20 rounded-full px-4 py-2 cursor-pointer hover:scale-102 transition-transform">
+              <span className="text-sm font-medium text-white">Mi Cuenta</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </div>
+
+            {/* Cart */}
+            <button 
+              className="relative p-2 rounded-full bg-white shadow-md hover:scale-105 transition-transform text-[#0F1880]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m-10 0h10m0 0l2 2m-2-2l-2 2" />
+              </svg>
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden p-2 rounded-full active:scale-90 transition-transform text-white"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {menuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
+
       {/* Mobile Menu */}
-      {menuOpen && (
-        <ul className="md:hidden flex flex-col items-center gap-4 mt-2 bg-[#0F1880] rounded-b-2xl py-4">
-          <li><a href="#menu" className="text-white font-bold text-xl">Menú</a></li>
-          <li><a href="#promociones" className="text-white font-bold text-xl">Promociones</a></li>
-          <li><a href="#locales" className="text-white font-bold text-xl">Locales</a></li>
-          <li className="flex flex-col items-end w-full pr-8 mt-2">
-            <span className="text-white text-sm">Hola</span>
-            <span className="text-white font-semibold text-base cursor-pointer">Mi Cuenta <span className="text-sm">▼</span></span>
-          </li>
-        </ul>
-      )}
+      <div 
+        className={`md:hidden mt-2 bg-[#0F1880] rounded-2xl shadow-xl overflow-hidden ${
+          menuOpen ? 'menu-enter-active' : 'menu-exit-active'
+        }`}
+        style={{
+          maxHeight: menuOpen ? '500px' : '0',
+          opacity: menuOpen ? 1 : 0,
+          transition: 'all 0.3s ease-in-out'
+        }}
+      >
+        <div className="p-4 space-y-2">
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={item.link}
+              className="block px-4 py-3 text-white hover:bg-white/20 rounded-lg transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.name}
+            </a>
+          ))}
+          <div className="pt-2 border-t border-gray-100">
+            <a 
+              href="#account" 
+              className="flex items-center justify-between px-4 py-3 text-white hover:bg-white/20 rounded-lg transition-colors"
+            >
+              <span>Mi Cuenta</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
     </header>
   );
 };
