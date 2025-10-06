@@ -15,6 +15,7 @@ import ActionBar from "./components/ActionBar";
 import CategoryTabs from "./components/CategoryTabs";
 import MenuSection from "./components/MenuSection";
 import MobileMenu from "./components/MobileMenu";
+import Hero from "./components/Hero";
 
 // Pages
 import CartPage from "./pages/CartPage";
@@ -67,43 +68,13 @@ function App() {
         
         {/* Contenido principal */}
         <div className="flex-1 overflow-y-auto">
-          {/* Contenido real */}
           <div className="w-full">
-            {/* Sección del video (solo en la página de inicio) */}
             {location.pathname === '/' && (
               <>
-                <div className="relative w-full bg-black overflow-hidden flex items-center justify-center" style={{ height: '70vh', minHeight: '500px' }}>
-                  <video 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline
-                    className="absolute inset-0 w-full h-full object-cover"
-                  >
-                    <source src="/images/hamburguesa.mp4" type="video/mp4" />
-                    Tu navegador no soporta el elemento de video.
-                  </video>
-                  
-                  {/* Lema sobre el video */}
-                  <div className="relative z-10 text-center px-4">
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg">
-                      <span className="block">LAS MEJORES HAMBURGUESAS</span>
-                      <span className="text-orange-400">DE LA CIUDAD</span>
-                    </h2>
-                    <p className="text-xl md:text-2xl text-white font-medium bg-black bg-opacity-50 inline-block px-6 py-2 rounded-full">
-                      ¡Sabor que enamora en cada bocado!
-                    </p>
-                  </div>
-                  
-                  {/* Overlay oscuro para mejor legibilidad */}
-                  <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-                </div>
-                
-                {/* Barra de acción con botones e información de contacto */}
+                <Hero />
                 <ActionBar />
-
-                {/* Sección de especialidad de la casa */}
                 <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100 relative overflow-hidden">
+                  {/* Contenido de la sección de especialidad */}
                   {/* Efecto de mancha de mostaza */}
                   <div className="absolute inset-0 z-0 overflow-hidden">
                     <div className="absolute inset-0 bg-yellow-100 opacity-30"></div>
@@ -226,13 +197,10 @@ function App() {
                     </div>
                   </div>
                 </section>
-              </>
-            )}
-
-          {/* Contenido principal */}
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100">
-            <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-              <Routes>
+                
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100">
+                  <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                    <Routes>
                 <Route 
                   path="/" 
                   element={
@@ -315,39 +283,41 @@ function App() {
                     } 
                   />
                 </Route>
-              </Routes>
-            </div>
+                    </Routes>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
+        
+        {/* Botón flotante de WhatsApp (solo en móviles) */}
+        {!isAdminRoute && (
+          <a
+            href="https://wa.me/51987654321"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed bottom-24 right-4 md:bottom-8 md:right-8 bg-green-500 text-white rounded-full shadow-lg z-50 animate-pulse p-3 md:p-4"
+            style={{
+              animation: 'pulse 2s infinite',
+              bottom: '6rem',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.animation = 'none';
+              e.currentTarget.style.boxShadow = '0 0 0 0 rgba(37, 211, 102, 0.7)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.animation = 'pulse 2s infinite';
+            }}
+          >
+            <FaWhatsapp className="h-10 w-10" />
+          </a>
+        )}
+        
+        {/* Barra de navegación inferior (solo en móviles) */}
+        <MobileMenu />
       </div>
-      
-      {/* Botón flotante de WhatsApp (solo en móviles) */}
-      {!isAdminRoute && (
-        <a
-          href="https://wa.me/51987654321"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="fixed bottom-24 right-4 md:bottom-8 md:right-8 bg-green-500 text-white rounded-full shadow-lg z-50 animate-pulse p-3 md:p-4"
-          style={{
-            animation: 'pulse 2s infinite',
-            bottom: '6rem', // Ajusta la posición vertical del botón
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.animation = 'none';
-            e.currentTarget.style.boxShadow = '0 0 0 0 rgba(37, 211, 102, 0.7)';
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.animation = 'pulse 2s infinite';
-          }}
-        >
-          <FaWhatsapp className="h-10 w-10" />
-        </a>
-      )}
-      
-      {/* Barra de navegación inferior (solo en móviles) */}
-      <MobileMenu />
-    </div>
-  </CartProvider>
+    </CartProvider>
   );
 }
 
