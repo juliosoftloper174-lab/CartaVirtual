@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class CategoriaController extends Controller
 {
@@ -29,13 +28,11 @@ class CategoriaController extends Controller
         $categoria->descripcion = $request->descripcion;
         $categoria->estado = $request->estado;
 
-        // Guardar imagen en storage/app/public/categorias
+        // Subir imagen si existe
         if ($request->hasFile('imagen')) {
             $filename = time() . '_' . $request->file('imagen')->getClientOriginalName();
-            $path = $request->file('imagen')->storeAs('categorias', $filename, 'public');
-
-            // Guardar solo la ruta relativa en la BD
-            $categoria->imagen_url = $path; // ejemplo: categorias/1757943396_ceviche.jpg
+            $request->file('imagen')->move(public_path('images/categorias'), $filename);
+            $categoria->imagen_url = "images/categorias/" . $filename;
         }
 
         $categoria->save();
@@ -68,32 +65,40 @@ class CategoriaController extends Controller
         }
 
         $request->validate([
-            'nombre' => 'sometimes|required|string|max:255',
+            'nombre' => 'sometimes|string|max:255',
             'descripcion' => 'nullable|string',
-            'estado' => 'sometimes|required|boolean',
+            'estado' => 'sometimes|boolean',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        if ($request->filled('nombre')) $categoria->nombre = $request->nombre;
-        if ($request->filled('descripcion')) $categoria->descripcion = $request->descripcion;
-        if ($request->has('estado')) $categoria->estado = $request->estado;
+        // ✅ Solo actualiza los campos enviados
+        if ($request->filled('nombre')) {
+            $categoria->nombre = $request->nombre;
+        }
+        if ($request->filled('descripcion')) {
+            $categoria->descripcion = $request->descripcion;
+        }
+        if ($request->has('estado')) {
+            $categoria->estado = $request->estado;
+        }
 
-        // Subir nueva imagen si existe
+        // ✅ Subir nueva imagen solo si se manda una
         if ($request->hasFile('imagen')) {
-            // Eliminar imagen anterior si existe
-            if ($categoria->imagen_url && Storage::disk('public')->exists($categoria->imagen_url)) {
-                Storage::disk('public')->delete($categoria->imagen_url);
+            // Eliminar la anterior si existe
+            if ($categoria->imagen_url && file_exists(public_path($categoria->imagen_url))) {
+                unlink(public_path($categoria->imagen_url));
             }
 
             $filename = time() . '_' . $request->file('imagen')->getClientOriginalName();
-            $path = $request->file('imagen')->storeAs('categorias', $filename, 'public');
-            $categoria->imagen_url = $path;
+            $request->file('imagen')->move(public_path('images/categorias'), $filename);
+            $categoria->imagen_url = "images/categorias/" . $filename;
         }
 
+        // ✅ Guardar sin cambiar la ID
         $categoria->save();
 
         return response()->json([
-            'message' => 'Categoría actualizada con éxito',
+            'message' => 'Categoría actualizada correctamente',
             'data' => $categoria
         ], 200);
     }
@@ -108,8 +113,8 @@ class CategoriaController extends Controller
         }
 
         // Eliminar imagen asociada si existe
-        if ($categoria->imagen_url && Storage::disk('public')->exists($categoria->imagen_url)) {
-            Storage::disk('public')->delete($categoria->imagen_url);
+        if ($categoria->imagen_url && file_exists(public_path($categoria->imagen_url))) {
+            unlink(public_path($categoria->imagen_url));
         }
 
         $categoria->delete();

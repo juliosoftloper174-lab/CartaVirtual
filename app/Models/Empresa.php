@@ -10,9 +10,8 @@ class Empresa extends Model
     use HasFactory;
 
     protected $table = 'empresa';
-    protected $primaryKey = 'id_empresa';
+    protected $primaryKey = 'id';
     public $timestamps = false;
-
     protected $fillable = [
         'nombre',
         'telefono',
@@ -22,7 +21,5 @@ class Empresa extends Model
         'facebook_url',
         'instagram_url',
         'video_pres_url',
-        'logo_url',
-        'portada_url'
     ];
 }

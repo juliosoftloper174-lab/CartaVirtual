@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Prueba Recursos Empresa</title>
+    </head>
+    <body>
+        <h1>Subir Logo y Portada (Nuevo Registro)</h1>
+        <form id="formCreate" enctype="multipart/form-data">
+            <label>Logo:</label><br />
+            <input type="file" name="logo_url" /><br /><br />
+            <label>Portada:</label><br />
+            <input type="file" name="portada_url" /><br /><br />
+            <button type="submit">Subir</button>
+        </form>
+
+        <hr />
+
+        <h1>Actualizar Imágenes</h1>
+        <form id="formUpdate" enctype="multipart/form-data">
+            <label>ID Recurso:</label><br />
+            <input type="number" name="id" placeholder="1" /><br /><br />
+            <label>Nuevo Logo:</label><br />
+            <input type="file" name="logo_url" /><br /><br />
+            <label>Nueva Portada:</label><br />
+            <input type="file" name="portada_url" /><br /><br />
+            <button type="submit">Actualizar</button>
+        </form>
+
+        <hr />
+        <h2>Vista Previa:</h2>
+        <img id="logo" src="" width="150" /><br />
+        <img id="portada" src="" width="300" /><br />
+
+        <script>
+            // Crear registro
+            document
+                .getElementById("formCreate")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    const res = await fetch(
+                        "http://localhost:8000/api/recursos-empresa",
+                        {
+                            method: "POST",
+                            body: formData,
+                        }
+                    );
+                    const data = await res.json();
+                    console.log(data);
+                    if (data.recurso) {
+                        document.getElementById("logo").src =
+                            "http://localhost:8000/" + data.recurso.logo_url;
+                        document.getElementById("portada").src =
+                            "http://localhost:8000/" + data.recurso.portada_url;
+                    }
+                });
+
+            // Actualizar registro
+            document
+                .getElementById("formUpdate")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    const id = e.target.id.value;
+                    const formData = new FormData(e.target);
+                    const res = await fetch(
+                        `http://localhost:8000/api/recursos-empresa/${id}`,
+                        {
+                            method: "POST",
+                            body: formData,
+                        }
+                    );
+                    const data = await res.json();
+                    console.log(data);
+                    if (data.recurso) {
+                        document.getElementById("logo").src =
+                            "http://localhost:8000/" + data.recurso.logo_url;
+                        document.getElementById("portada").src =
+                            "http://localhost:8000/" + data.recurso.portada_url;
+                    }
+                });
+        </script>
+    </body>
+</html>

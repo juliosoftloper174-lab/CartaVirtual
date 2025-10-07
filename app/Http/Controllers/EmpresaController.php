@@ -2,54 +2,56 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Empresa;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {
-    // Ver los datos de la empresa
+    /**
+     * Muestra el único registro de la empresa
+     */
     public function show()
     {
-        $empresa = Empresa::find(1);
+        $empresa = Empresa::first();
 
         if (!$empresa) {
-            return response()->json(['message' => 'Empresa no encontrada.'], 404);
+            return response()->json(['message' => 'No se ha encontrado ningún registro de empresa.'], 404);
         }
 
-        return response()->json($empresa);
+        return response()->json($empresa, 200);
     }
 
-    // Actualizar datos de la empresa (incluye imágenes y URL de YouTube)
-    public function update(Request $request)
+    /**
+     * Actualiza el registro existente de la empresa
+     */
+    public function update(Request $request, $id)
     {
-        $empresa = Empresa::find(1);
+        $empresa = Empresa::find($id);
 
         if (!$empresa) {
-            return response()->json(['message' => 'Empresa no encontrada.'], 404);
+            return response()->json(['message' => 'El registro de la empresa a actualizar no existe.'], 404);
         }
 
-        // Si se sube un logo nuevo
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('empresa/Logos', 'public');
-            $empresa->logo_url = $logoPath;
-        }
+        $request->validate([
+            // Datos de la empresa (obligatorios)
+            'nombre' => 'required|string|max:300',
+            'telefono' => 'required|string|size:9',
+            'ubicacion' => 'required|string|max:255',
+            'horario' => 'required|string|max:300',
 
-        // Si se sube una portada nueva
-        if ($request->hasFile('portada')) {
-            $portadaPath = $request->file('portada')->store('empresa/Portadas', 'public');
-            $empresa->portada_url = $portadaPath;
-        }
+            // Redes sociales (opcionales)
+            'tiktok_url' => 'nullable|url|max:255',
+            'facebook_url' => 'nullable|url|max:255',
+            'instagram_url' => 'nullable|url|max:255',
+            'video_pres_url' => 'nullable|url|max:255',
+        ]);
 
-        // Guardar la URL de YouTube (simple texto)
-        if ($request->filled('video_pres_url')) {
-            $empresa->video_pres_url = $request->video_pres_url;
-        }
+        // Actualizamos
+        $empresa->update($request->all());
 
-        // Actualizar otros campos normales
-        $empresa->fill($request->except(['logo', 'portada', 'video_pres_url']));
-        $empresa->save();
-
-        return response()->json(['message' => 'Empresa actualizada correctamente.']);
+        return response()->json([
+            'message' => 'Datos de la empresa actualizados correctamente.',
+            'empresa' => $empresa
+        ], 200);
     }
 }

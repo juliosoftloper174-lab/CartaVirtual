@@ -140,8 +140,7 @@ class CarritoController extends Controller
 
 
 // ================== confirmacion de CARRITO en donde se manda el mensaje a ws ==================
-
-        public function confirmarCompra(Request $request)
+    public function confirmarCompra(Request $request)
     {
         try {
             $request->validate([
@@ -157,6 +156,7 @@ class CarritoController extends Controller
 
             if (empty($carrito)) {
                 return response()->json([
+                    'status'  => 'error',
                     'message' => 'El carrito está vacío, no se puede confirmar la compra'
                 ], 400);
             }
@@ -172,16 +172,49 @@ class CarritoController extends Controller
                 'productos'       => $carrito,
             ];
 
+            // Construcción del mensaje
+            $mensaje  = "🛒 *Nuevo Pedido Confirmado* 🛒\n\n";
+            $mensaje .= "*Cliente:* {$pedido['nombre_cliente']}\n";
+            $mensaje .= "*Teléfono:* {$pedido['telef_cliente']}\n";
+            $mensaje .= "*Método de pago:* {$pedido['metodo_pago']}\n";
+            $mensaje .= $pedido['direccion_envio'] 
+                ? "*Dirección:* {$pedido['direccion_envio']}\n"
+                : "*Mesa:* {$pedido['mesa']}\n";
+            if (!empty($pedido['observaciones'])) {
+                $mensaje .= "*Observaciones:* {$pedido['observaciones']}\n";
+            }
+            $mensaje .= "*Fecha:* {$pedido['fecha_pedido']}\n\n";
+            $mensaje .= "📦 *Productos:*\n";
+
+            // Calcular total
+            $total = 0;
+            foreach ($pedido['productos'] as $item) {
+                $subtotal = $item['precio'] * $item['cantidad'];
+                $total += $subtotal;
+                $mensaje .= "- {$item['nombre']} (x{$item['cantidad']}) - S/ " . number_format($subtotal, 2) . "\n";
+            }
+
+            $mensaje .= "\n💰 *Total:* S/ " . number_format($total, 2);
+
+            // Número de WhatsApp
+            $telefono = "51934629203";
+            $url = "https://wa.me/{$telefono}?text=" . urlencode($mensaje);
+
             // Vaciar carrito
             $request->session()->forget('carrito');
 
+            // 👉 Devolver JSON amigable
             return response()->json([
-                'message' => 'Pedido confirmado con éxito',
-                'pedido'  => $pedido
+                'status'       => 'success',
+                'message'      => 'Pedido confirmado con éxito',
+                'whatsapp_url' => $url,
+                'total'        => $total,
+                'pedido'       => $pedido
             ], 201);
 
         } catch (\Exception $e) {
             return response()->json([
+                'status'  => 'error',
                 'message' => 'Error al confirmar compra',
                 'error'   => $e->getMessage()
             ], 500);

@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Producto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
-    // LISTAR TODOS
+    // 📋 LISTAR TODOS
     public function index()
     {
         return response()->json(Producto::all(), 200);
     }
 
-    // CREAR PRODUCTO
+    // 🟢 CREAR PRODUCTO
     public function store(Request $request)
     {
         $request->validate([
@@ -35,8 +34,8 @@ class ProductoController extends Controller
 
         if ($request->hasFile('imagen')) {
             $filename = time() . '_' . $request->file('imagen')->getClientOriginalName();
-            $path = $request->file('imagen')->storeAs('productos', $filename, 'public');
-            $producto->imagen_url = $path; // se guarda: productos/archivo.jpg
+            $request->file('imagen')->move(public_path('images/productos'), $filename);
+            $producto->imagen_url = "images/productos/" . $filename;
         }
 
         $producto->save();
@@ -47,19 +46,24 @@ class ProductoController extends Controller
         ], 201);
     }
 
-    // MOSTRAR UNO
+    // 🔍 MOSTRAR UNO
     public function show($id)
     {
         $producto = Producto::find($id);
-        if (!$producto) return response()->json(['message' => 'Producto no encontrado'], 404);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
         return response()->json($producto, 200);
     }
 
-    // ACTUALIZAR
+    // ✏️ ACTUALIZAR PRODUCTO
     public function update(Request $request, $id)
     {
         $producto = Producto::find($id);
-        if (!$producto) return response()->json(['message' => 'Producto no encontrado'], 404);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
 
         $request->validate([
             'nombre' => 'sometimes|required|string|max:100',
@@ -70,19 +74,23 @@ class ProductoController extends Controller
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
         ]);
 
-        if ($request->filled('nombre')) $producto->nombre = $request->nombre;
-        if ($request->filled('descripcion')) $producto->descripcion = $request->descripcion;
-        if ($request->filled('precio')) $producto->precio = $request->precio;
-        if ($request->filled('id_categoria')) $producto->id_categoria = $request->id_categoria;
+        // Asignar solo los campos que existen
+        if ($request->has('nombre')) $producto->nombre = $request->nombre;
+        if ($request->has('descripcion')) $producto->descripcion = $request->descripcion;
+        if ($request->has('precio')) $producto->precio = $request->precio;
+        if ($request->has('id_categoria')) $producto->id_categoria = $request->id_categoria;
         if ($request->has('estado')) $producto->estado = $request->estado;
 
+        // Manejar imagen si se envió
         if ($request->hasFile('imagen')) {
-            if ($producto->imagen_url && Storage::disk('public')->exists($producto->imagen_url)) {
-                Storage::disk('public')->delete($producto->imagen_url);
+            // Eliminar imagen anterior si existe
+            if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
+                unlink(public_path($producto->imagen_url));
             }
+
             $filename = time() . '_' . $request->file('imagen')->getClientOriginalName();
-            $path = $request->file('imagen')->storeAs('productos', $filename, 'public');
-            $producto->imagen_url = $path;
+            $request->file('imagen')->move(public_path('images/productos'), $filename);
+            $producto->imagen_url = "images/productos/" . $filename;
         }
 
         $producto->save();
@@ -93,17 +101,21 @@ class ProductoController extends Controller
         ], 200);
     }
 
-    // ELIMINAR
+    // ❌ ELIMINAR PRODUCTO
     public function destroy($id)
     {
         $producto = Producto::find($id);
-        if (!$producto) return response()->json(['message' => 'Producto no encontrado'], 404);
+        if (!$producto) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
 
-        if ($producto->imagen_url && Storage::disk('public')->exists($producto->imagen_url)) {
-            Storage::disk('public')->delete($producto->imagen_url);
+        // Eliminar imagen física si existe
+        if ($producto->imagen_url && file_exists(public_path($producto->imagen_url))) {
+            unlink(public_path($producto->imagen_url));
         }
 
         $producto->delete();
+
         return response()->json(['message' => 'Producto eliminado con éxito'], 200);
     }
 }

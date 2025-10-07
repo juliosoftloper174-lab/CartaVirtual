@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de la Empresa (Demo API)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1, h2 { color: #333; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        #portada-container { margin-bottom: 20px; }
+        #logo-img { max-width: 150px; display: block; margin: 10px 0; }
+        .details p { margin: 5px 0; line-height: 1.5; }
+        .section { margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px; }
+        .social-links a { margin-right: 15px; text-decoration: none; color: #007bff; }
+        .video-container { position: relative; width: 100%; padding-bottom: 56.25%; /* 16:9 Aspect Ratio */ height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #error-message { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Datos de Configuración de la Empresa</h1>
+        <p id="error-message" style="display: none;"></p>
+        
+        <div id="loading" style="text-align: center; padding: 20px;">Cargando datos...</div>
+
+        <div id="empresa-data" style="display: none;">
+            
+            <div id="portada-container">
+                <h2>Portada</h2>
+                <img id="portada-img" src="" alt="Portada de la Empresa">
+            </div>
+
+            <div class="section details">
+                <h2>Información Principal</h2>
+                <img id="logo-img" src="" alt="Logo de la Empresa">
+                <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+                <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
+                <p><strong>Ubicación:</strong> <span id="ubicacion"></span></p>
+                <p><strong>Horario:</strong> <span id="horario"></span></p>
+            </div>
+
+            <div class="section">
+                <h2>Video de Presentación</h2>
+                <div id="video-embed"></div>
+            </div>
+
+            <div class="section social-links">
+                <h2>Redes Sociales</h2>
+                <p><a id="tiktok" href="#" target="_blank">TikTok</a></p>
+                <p><a id="facebook" href="#" target="_blank">Facebook</a></p>
+                <p><a id="instagram" href="#" target="_blank">Instagram</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/api/empresa';
+        const STORAGE_BASE_URL = 'http://127.0.0.1:8000/storage/';
+
+        // Función para extraer el ID de YouTube de una URL completa
+        function getYoutubeEmbedUrl(url) {
+            if (!url) return null;
+            
+            // Expresión regular para encontrar IDs de YouTube en URLs normales, cortas o de 'embed'
+            const regExp = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+            const match = url.match(regExp);
+            
+            if (match && match[1].length === 11) {
+                const videoId = match[1];
+                return `https://www.youtube.com/embed/${videoId}`;
+            }
+            return null;
+        }
+
+        async function loadEmpresaData() {
+            const loadingElement = document.getElementById('loading');
+            const dataContainer = document.getElementById('empresa-data');
+            const errorElement = document.getElementById('error-message');
+            
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Si el servidor devuelve un 404 (no encontrado) o un 500
+                    errorElement.textContent = data.message || `Error al obtener los datos: Código ${response.status}`;
+                    errorElement.style.display = 'block';
+                    loadingElement.style.display = 'none';
+                    return;
+                }
+
+                // Mostrar los datos principales
+                document.getElementById('nombre').textContent = data.nombre;
+                document.getElementById('telefono').textContent = data.telefono;
+                document.getElementById('ubicacion').textContent = data.ubicacion;
+                document.getElementById('horario').textContent = data.horario;
+
+                // Cargar Logo y Portada
+                const logoImg = document.getElementById('logo-img');
+                const portadaImg = document.getElementById('portada-img');
+                
+                // Las URLs de imágenes vienen relativas. Les agregamos el prefijo de STORAGE
+                if (data.logo_url) {
+                    logoImg.src = STORAGE_BASE_URL + data.logo_url;
+                } else {
+                    logoImg.style.display = 'none';
+                }
+
+                if (data.portada_url) {
+                    portadaImg.src = STORAGE_BASE_URL + data.portada_url;
+                } else {
+                    portadaImg.style.display = 'none';
+                }
+
+                // Cargar Video
+                const videoEmbed = document.getElementById('video-embed');
+                const embedUrl = getYoutubeEmbedUrl(data.video_pres_url);
+                
+                if (embedUrl) {
+                    videoEmbed.innerHTML = `
+                        <div class="video-container">
+                            <iframe src="${embedUrl}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    `;
+                } else {
+                    videoEmbed.innerHTML = `<p>Video de presentación no disponible o URL no válida.</p>`;
+                }
+
+                // Cargar Redes Sociales
+                document.getElementById('tiktok').href = data.tiktok_url || '#';
+                document.getElementById('facebook').href = data.facebook_url || '#';
+                document.getElementById('instagram').href = data.instagram_url || '#';
+
+                // Mostrar la sección de datos y ocultar el loader
+                loadingElement.style.display = 'none';
+                dataContainer.style.display = 'block';
+
+            } catch (error) {
+                console.error('Error de red o procesamiento:', error);
+                errorElement.textContent = 'Error de conexión con la API.';
+                errorElement.style.display = 'block';
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        // Ejecutar la función al cargar la página
+        document.addEventListener('DOMContentLoaded', loadEmpresaData);
+    </script>
+
+</body>
+</html>
